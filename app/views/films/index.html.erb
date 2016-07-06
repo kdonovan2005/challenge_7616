@@ -1,10 +1,11 @@
 <% @films.each do |result| %>
-  <%= result["year"] %> <br>
-  _______________________ <br>
-  <% result["films"].each do |film| %> <br>
-    <%= film["Film"] %>
-    <%= film.get_budget %>
-  <% end %> <br> <br>
+  <% year = result["year"] %>
+  <% result["films"].each do |film| %>
+    <% if film["Winner"] == true %>
+      Title: <%= film["Film"] %> <br>
+      <% url = film["Detail URL"] %>
+      Budget: $<%= @film.get_budget(url) %><br>
+      Year: <%= year %> <br> <br>
+    <% end %>
+  <% end %> <br>
 <% end %>
-
-<%= @budget %>
