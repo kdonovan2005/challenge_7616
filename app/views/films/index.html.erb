@@ -1,0 +1,10 @@
+<% @films.each do |result| %>
+  <%= result["year"] %> <br>
+  _______________________ <br>
+  <% result["films"].each do |film| %> <br>
+    <%= film["Film"] %>
+    <%= film.get_budget %>
+  <% end %> <br> <br>
+<% end %>
+
+<%= @budget %>
