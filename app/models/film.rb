@@ -23,7 +23,7 @@ class Film < ActiveRecord::Base
       if @budget == nil
         @budget = "Data Unavailable"
       else
-        convert_budget_to_integer
+        @budget = convert_budget_to_integer
       end
       @budget
       #rescues from bad detail URLs
@@ -34,13 +34,14 @@ class Film < ActiveRecord::Base
 
   def convert_budget_to_integer
     #replaces [ i ] from end of budget string response with ""
-    @budget.sub /\s*\[.+\]$/, ""
+
     #checks if the budget string includes the word "million"
     if @budget.include? "million"
       convert_from_million
     else
       convert_from_integer_string
     end
+    @budget.sub /\s*\[.+\]$/, ""
   end
 
   def convert_from_million
@@ -51,7 +52,7 @@ class Film < ActiveRecord::Base
   end
 
   def convert_from_integer_string
-    @budget.split("$").last.to_f
+    @budget.split("$").last
   end
 
 end
