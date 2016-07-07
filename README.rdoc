@@ -29,7 +29,7 @@ The Regex expression used does the following:
 
 I also use the Ruby split method to remove any additional characters (for example, $, £, or other letters) to return the base number. If the original string included the word "million", such as "US$2 million", I then multiply the base number by 1 million to return a full number.
 
-The numbers are then added to the instance variable @budget_sum, which starts at 0 and each budget is added to as each film is iterated through. The counter, @film_count, also starts at 0 and is incremented by 1 on each iteration.
+The numbers are then added to the instance variable @budget_sum, which starts at 0, and to which each budget is added as the films are iterated through. The counter, @film_count, also starts at 0 and is incremented by 1 on each iteration.
 
 At the bottom, @budget_count is divided by @film_count to return the average budget of all winning films.
 
@@ -37,7 +37,7 @@ Edge Cases:
 
 There are 5 films in the results that have bad details URLs and, therefore, their budgets are unknown and not included in the budget total. They are also not included in the total film count, therefore they are not factored into the average budget.
 
-A couple of films' budgets are give in British pounds. The numerical value is taken one to one and is not being converted via any exchange rate from pounds to US dollars. This is skewing the average budget because of the difference in conversion rate.
+A couple of films' budgets are give in British pounds. The numerical value is taken one to one and is not being converted via any exchange rate from pounds to US dollars.
 
 Known Issues:
 
