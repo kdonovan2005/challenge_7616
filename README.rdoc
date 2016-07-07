@@ -21,11 +21,11 @@ To access Budget data, the instance method, 'get_budget' is passed the film's "D
 A logic statement in the 'get_budget' method then handles cases where the budget is nil by printing "Data Unavailable" in place where the budget should show. If the budget is not nil, the budget string is converted to an integer using Regex.
 The Regex expression used does the following:
 
-\s* includes any number of whitespace characters before the open bracket
-\[ open bracket as a literal
-.+ match one or more of any characters
-\] close bracket as a literal
-$ match end of string
+'\s*' includes any number of whitespace characters before the open bracket
+'\[' open bracket as a literal
+'.+' match one or more of any characters
+'\]' close bracket as a literal
+'$' match end of string
 
 I also use the Ruby split method to remove any additional characters (for example, $ or other letters) to return the base number. If the original string included the word "million", such as "US$2 million", I then mulply the base numebr by 1 million to return a full number.
 
@@ -33,8 +33,12 @@ The numbers are then added to the instance variable @budget_sum, which starts at
 
 At the bottom, @budget_count is divided by @film_count to return the average budget of all winning films.
 
-Known issues:
+Edge Cases:
 
-There are 5 films in the results that have bad details URLs and, therefore, their budgets are unknown and not included in the budget total; however, they are included in the total film count by which the total of all the budgets is divided. This, therefore, results in an incorrect average.
+There are 5 films in the results that have bad details URLs and, therefore, their budgets are unknown and not included in the budget total. They are also not included in the total film count, therefore they are not factored into the average budget.
 
-A couple of films' budgets are give in British pounds. The numerical value is being taken one to one and is not being converted via any exchange rate from pounds to US dollars.
+A couple of films' budgets are give in British pounds. The numerical value is taken one to one and is not being converted via any exchange rate from pounds to US dollars. This is possibly skewing the average budget because of the difference in conversion rate.
+
+Known Issues:
+
+Speed is a known issue for this program. It takes several seconds to make all of the API calls and return the data. In practice, this feels very long on the user end.
