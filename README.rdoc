@@ -21,11 +21,11 @@ To access Budget data, the instance method, 'get_budget' is passed the film's "D
 A logic statement in the 'get_budget' method then handles cases where the budget is nil by printing "Data Unavailable" in place where the budget should show. If the budget is not nil, the budget string is converted to an integer using Regex.
 The Regex expression used does the following:
 
-'\s*' includes any number of whitespace characters before the open bracket
-'\[' open bracket as a literal
-'.+' match one or more of any characters
-'\]' close bracket as a literal
-'$' match end of string
+1. '\s*' includes any number of whitespace characters before the open bracket
+2. '\[' open bracket as a literal
+3. '.+' match one or more of any characters
+4. '\]' close bracket as a literal
+5. '$' match end of string
 
 I also use the Ruby split method to remove any additional characters (for example, $ or other letters) to return the base number. If the original string included the word "million", such as "US$2 million", I then mulply the base numebr by 1 million to return a full number.
 
