@@ -1,11 +1,20 @@
+<% @budget_sum = 0 %>
+<% @film_count = 0 %>
 <% @films.each do |result| %>
   <% year = result["year"] %>
   <% result["films"].each do |film| %>
     <% if film["Winner"] == true %>
       Title: <%= film["Film"] %> <br>
       <% url = film["Detail URL"] %>
-      Budget: $<%= @film.get_budget(url) %><br>
+      Budget: $<%= @film.get_budget(url) %> <br>
+        <% @budget_sum += @film.get_budget(url).to_f %>
+        <% if @film.get_budget(url) != "Data Unavailable" %>
+          <% @film_count += 1 %>
+        <% end %>
       Year: <%= year %> <br> <br>
     <% end %>
   <% end %> <br>
 <% end %>
+<% binding.pry %>
+<%@average = @budget_sum / @film_count %>
+Average Budget = $<%= @average.round(2) %>

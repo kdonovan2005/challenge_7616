@@ -1,28 +1,40 @@
-== README
+Welcome to the Oscar Film Data JSON parser
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This app parses the input of a url for an API of Oscar film contenders and outputs a view that renders each year's winning film data: title, budget and production year. The average budget is calculated and output at the end of the page.
 
-Things you may want to cover:
+To run this app:
 
-* Ruby version
+1. Fork or clone this app
+2. cd into the app and run "bundle install" in the command line (this will install third party dependencies, specifically, RestClient)
+3. Open Postgresql and run "rake db:migrate" in the command line
+4. Start a rails server by running "rails s" in the command line
+5. Navigate to localhost:3000/
 
-* System dependencies
+This app is made in Ruby on a Rails framework. I chose Rails because of the simple view rendering and quick application set up.
 
-* Configuration
+The approach I took was to set up a view that would display the required data (film title, film budget, and film year) for the winning film.
 
-* Database creation
+The view file calls on the film controller and film model for the majority of it's methods and logic. The first thing the view does is iterate over the @films instance variable, which calls on the class method 'get_data'. The 'get_data' method takes in the home URL of the api, uses RestClient to get the JSON response from the API, and parses its to return the results, in this case, an array of hashes. This array of hashes is then iterated over to return the individual film data of the winning films. Non-winning films are filtered out using a simple if statement that checks the API data under the key "Winner", if the value is true, it returns the data; if the value is false, it is filtered out.
 
-* Database initialization
+To access Budget data, the instance method, 'get_budget' is passed the film's "Details URL" url. The url is then passed to RestClient and the JSON result is parsed and filtered down to the Budget. A few of the "Details URL"s returned a 404 response, which is handled with a rescuse statement. The rescue statement prints to the command line "Bad URL" and sets the film's budget to nil.
 
-* How to run the test suite
+A logic statement in the 'get_budget' method then handles cases where the budget is nil by printing "Data Unavailable" in place where the budget should show. If the budget is not nil, the budget string is converted to an integer using Regex.
+The Regex expression used does the following:
 
-* Services (job queues, cache servers, search engines, etc.)
+\s* includes any number of whitespace characters before the open bracket
+\[ open bracket as a literal
+.+ match one or more of any characters
+\] close bracket as a literal
+$ match end of string
 
-* Deployment instructions
+I also use the Ruby split method to remove any additional characters (for example, $ or other letters) to return the base number. If the original string included the word "million", such as "US$2 million", I then mulply the base numebr by 1 million to return a full number.
 
-* ...
+The numbers are then added to the instance variable @budget_sum, which starts at 0 and each budget is added to as each film is iterated through. The counter, @film_count, also starts at 0 and is incremented by 1 on each iteration.
 
+At the bottom, @budget_count is divided by @film_count to return the average budget of all winning films.
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Known issues:
+
+There are 5 films in the results that have bad details URLs and, therefore, their budgets are unknown and not included in the budget total; however, they are included in the total film count by which the total of all the budgets is divided. This, therefore, results in an incorrect average.
+
+A couple of films' budgets are give in British pounds. The numerical value is being taken one to one and is not being converted via any exchange rate from pounds to US dollars.

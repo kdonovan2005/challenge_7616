@@ -34,25 +34,28 @@ class Film < ActiveRecord::Base
 
   def convert_budget_to_integer
     #replaces [ i ] from end of budget string response with ""
-
-    #checks if the budget string includes the word "million"
-    if @budget.include? "million"
-      convert_from_million
-    else
-      convert_from_integer_string
-    end
     @budget.sub /\s*\[.+\]$/, ""
+    #checks if the budget string includes the word "million"
+    if @budget.include?("million")
+      @budget = convert_from_million
+    else
+      @budget = convert_from_integer_string
+    end
+    @budget
   end
 
   def convert_from_million
     #separates the $ from the number and word, then splits again to separate the number from 'million' then converts to float
-    i = @budget.split("$").last.split(" ")[0].to_f
+    i = @budget.split("$").last.split(" ")[0].to_f if @budget.include?("$")
+    i = @budget.split("£").last.split(" ")[0].to_f if @budget.include?("£")
     #multiples the number by 1 million to return the integer
     i * 1000000
   end
 
   def convert_from_integer_string
-    @budget.split("$").last
+    i = @budget.split("$").last.sub /\s*\[.+\]$/, "" if @budget.include?("$")
+    i = @budget.split("£").last.sub /\s*\[.+\]$/, "" if @budget.include?("£")
+    i.sub /\s*\(.+\)$/, ""
   end
 
 end
