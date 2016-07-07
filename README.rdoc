@@ -22,10 +22,10 @@ A logic statement in the 'get_budget' method then handles cases where the budget
 The Regex expression used does the following:
 
 1. '\s*' includes any number of whitespace characters before the open bracket
-2. '\[' open bracket as a literal
-3. '.+' match one or more of any characters
-4. '\]' close bracket as a literal
-5. '$' match end of string
+2. '\[' opens bracket as a literal
+3. '.+' matches one or more of any characters
+4. '\]' closes bracket as a literal
+5. '$' matches end of string
 
 I also use the Ruby split method to remove any additional characters (for example, $ or other letters) to return the base number. If the original string included the word "million", such as "US$2 million", I then mulply the base numebr by 1 million to return a full number.
 
